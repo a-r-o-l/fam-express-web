@@ -1,7 +1,5 @@
 import { Button } from "../ui/button";
-import {
-  LayoutDashboard,
-} from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 import {} from "../ui/dropdown-menu";
 import { NavLink } from "react-router-dom";
 import {
@@ -42,8 +40,15 @@ function Aside({ isSidebarOpen, setIsSidebarOpen }) {
           )}
         </NavLink>
       </nav>
-      <Sheet open={isSidebarOpen} onOpenChange={() => setIsSidebarOpen(false)} modal={false}>
-        <SheetContent side="left" className="bg-white p-4 block sm:block md:hidden lg:hidden xl:hidden">
+      <Sheet
+        open={isSidebarOpen}
+        onOpenChange={() => setIsSidebarOpen(false)}
+        modal={false}
+      >
+        <SheetContent
+          side="left"
+          className="bg-white p-4 block sm:block md:hidden lg:hidden xl:hidden"
+        >
           <SheetHeader>
             <SheetTitle>
               <img
@@ -61,7 +66,6 @@ function Aside({ isSidebarOpen, setIsSidebarOpen }) {
                 className={({ isActive }) =>
                   isActive ? "underline underline-offset-8 text-cx-2" : ""
                 }
-                onClick={() => setIsSidebarOpen(false)}
               >
                 {({ isActive }) => (
                   <Button

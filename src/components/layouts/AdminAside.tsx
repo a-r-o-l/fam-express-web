@@ -171,25 +171,125 @@ function AdminAside({ isSidebarOpen, setIsSidebarOpen }) {
             <SheetDescription></SheetDescription>
           </SheetHeader>
           <div className="grid gap-4 py-4">
-            <nav className="space-y-5 py-5">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive ? "underline underline-offset-8 text-cx-2" : ""
-                }
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                {({ isActive }) => (
-                  <Button
-                    variant={isActive ? "default" : "ghost"}
-                    className="w-full justify-start"
-                  >
-                    <Users className="mr-2 h-4 w-4" />
-                    Cuentas
-                  </Button>
-                )}
-              </NavLink>
-            </nav>
+            <NavLink
+              to="/admin/accounts"
+              className={({ isActive }) =>
+                isActive ? "underline underline-offset-8 text-cx-2" : ""
+              }
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "default" : "ghost"}
+                  className="w-full justify-start"
+                >
+                  <Users className="mr-2 h-4 w-4" />
+                  Cuentas
+                </Button>
+              )}
+            </NavLink>
+            <NavLink
+              to="/admin/sales"
+              className={({ isActive }) =>
+                isActive ? "underline underline-offset-8 text-cx-2" : ""
+              }
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "default" : "ghost"}
+                  className="w-full justify-start"
+                >
+                  <LayoutDashboard className="mr-2 h-4 w-4" />
+                  Ventas
+                </Button>
+              )}
+            </NavLink>
+            <NavLink
+              to="/admin/closes"
+              className={({ isActive }) =>
+                isActive ? "underline underline-offset-8 text-cx-2" : ""
+              }
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "default" : "ghost"}
+                  className="w-full justify-start"
+                >
+                  <Inbox className="mr-2 h-4 w-4" />
+                  Cierres
+                </Button>
+              )}
+            </NavLink>
+            <NavLink
+              to="/admin/services"
+              className={({ isActive }) =>
+                isActive ? "underline underline-offset-8 text-cx-2" : ""
+              }
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "default" : "ghost"}
+                  className="w-full justify-start"
+                >
+                  <Cuboid className="mr-2 h-4 w-4" />
+                  Servicios
+                </Button>
+              )}
+            </NavLink>
+            <NavLink
+              to="/admin/recharges"
+              className={({ isActive }) =>
+                isActive ? "underline underline-offset-8 text-cx-2" : ""
+              }
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "default" : "ghost"}
+                  className="w-full justify-start"
+                >
+                  <PlugZap className="mr-2 h-4 w-4" />
+                  Recargas
+                </Button>
+              )}
+            </NavLink>
+            <NavLink
+              to="/admin/orders"
+              className={({ isActive }) =>
+                isActive ? "underline underline-offset-8 text-cx-2" : ""
+              }
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "default" : "ghost"}
+                  className="w-full justify-start"
+                >
+                  <ListOrdered className="mr-2 h-4 w-4" />
+                  Pedidos
+                </Button>
+              )}
+            </NavLink>
+            <NavLink
+              to="/admin/payments"
+              className={({ isActive }) =>
+                isActive ? "underline underline-offset-8 text-cx-2" : ""
+              }
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "default" : "ghost"}
+                  className="w-full justify-start"
+                >
+                  <Banknote className="mr-2 h-4 w-4" />
+                  Pagos
+                </Button>
+              )}
+            </NavLink>
           </div>
         </SheetContent>
       </Sheet>
