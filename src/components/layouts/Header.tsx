@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import ThemeButton from "../custom/Button/ThemeButton";
+// import ThemeButton from "../custom/Button/ThemeButton";
 import { useAccountStore } from "@/store/useAccountStore";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle} from "../ui/alert-dialog";
 import OpeningModal from "../custom/Modal/OpeningModal";
@@ -38,7 +38,7 @@ function Header({ isSidebarOpen, setIsSidebarOpen }) {
         </Button>
         <h1 className="text-lg font-semibold"></h1>
         <div className="flex items-center">
-         <ThemeButton/>
+         {/* <ThemeButton/> */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="lg" className="flex items-center">
