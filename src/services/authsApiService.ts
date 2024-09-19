@@ -2,9 +2,14 @@ import { PartialAccountInt } from "@/types/AccountTypes";
 import { http } from "./http";
 
 
+type createSessionParams = {
+  name: string;
+  password: string;
+}
+
 export const authsApiService = {
   
-  async createSession(bulk: Partial<PartialAccountInt>) {
+  async createSession(bulk: createSessionParams) {
     const response = await http.post("/sign-in", bulk);
     return response.data;
   },

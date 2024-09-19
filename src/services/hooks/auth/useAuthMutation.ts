@@ -3,9 +3,13 @@ import { authsApiService } from "../../authsApiService";
 import { AxiosError } from "axios";
 import { PartialAccountInt } from "@/types/AccountTypes";
 
-type PartialAccountType = Partial<PartialAccountInt>
+type PartialAccountType = PartialAccountInt
 
-type RemakeSessionParams = {id: string}
+type createSessionParams = {
+  name: string;
+  password: string;
+}
+
 type OpenBoxParams = {id: string, bulk:PartialAccountInt}
 
 export interface SessionResponse {
@@ -20,25 +24,16 @@ export interface remakeSessionResponse {
 export type SignInMutationOptions = UseMutationOptions<SessionResponse, AxiosError, PartialAccountType | null>;
   export type SignInMutationResult = UseMutationResult<SessionResponse, AxiosError, PartialAccountType | null>;
 
-export const useCreateSessionMutation = (options?: SignInMutationOptions):SignInMutationResult => {
-  return useMutation<SessionResponse, AxiosError, PartialAccountType | null>({
-    mutationFn: (params: PartialAccountType | null) => {
-      return authsApiService.createSession(params);
-    },
+  
+  export const useCreateSessionMutation = (options?: UseMutationOptions<SessionResponse, AxiosError, createSessionParams>) => {
+    return useMutation<SessionResponse, AxiosError, createSessionParams>({
+      mutationFn: (params: createSessionParams) => {
+        return authsApiService.createSession(params);
+      },
+      ...options,
+    });
+  };
 
-    ...options,
-  });
-};
-
-export const useRemakeSessionMutation = (params?:null,options?: UseMutationOptions<remakeSessionResponse, Error,RemakeSessionParams, unknown >) => {
-  return useMutation({
-    mutationFn: (params:RemakeSessionParams) => {
-      return authsApiService.createSession(params.id);
-    },
-
-    ...options,
-  });
-};
 
 export const useOpenBoxMutation = (params?:null,options?: UseMutationOptions<remakeSessionResponse, Error,OpenBoxParams, unknown >) => {
   return useMutation({
