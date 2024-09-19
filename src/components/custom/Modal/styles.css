@@ -1,0 +1,12 @@
+@media print {
+    .print-only {
+      display: block !important;
+    }
+    .only-app {
+      display: none;
+    }
+  }
+  
+  .print-only {
+    display: none;
+  }
