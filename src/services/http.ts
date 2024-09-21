@@ -2,6 +2,7 @@ import axios from "axios";
 import { useAccountStore } from "@/store/useAccountStore";
 
 const apiUrl = import.meta.env.VITE_API_URL;
+console.log(apiUrl)
 
 export const http = axios.create({
   baseURL: apiUrl,

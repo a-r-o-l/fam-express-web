@@ -1,15 +1,13 @@
-import { PartialAccountInt } from "@/types/AccountTypes";
+import { PartialAccountPopulatedInt } from "@/types/AccountTypes";
 import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 // import { persist } from "zustand/middleware";
 
-type Account = PartialAccountInt
-
 type AccountStore = {
-  account: Account | null;
+  account: PartialAccountPopulatedInt | null;
   accessToken: string;
   refreshToken: string;
-  setAccount: (account: Account) => void;
+  setAccount: (account: PartialAccountPopulatedInt) => void;
   setAccessToken: (accessToken: string) => void;
   setRefreshToken: (refreshToken: string) => void;
   setCloseSession: () => void;
@@ -20,7 +18,8 @@ export const useAccountStore = create<AccountStore>((set) => ({
   account: null,
   accessToken: "",
   refreshToken: "",
-  setAccount: (account: Account) => set((state) => ({ ...state, account })),
+  setAccount: (account: PartialAccountPopulatedInt) =>
+    set((state) => ({ ...state, account })),
   setAccessToken: (accessToken: string) =>
     set((state) => ({ ...state, accessToken })),
   setRefreshToken: (refreshToken: string) =>
@@ -38,7 +37,7 @@ export const useAccountStore = create<AccountStore>((set) => ({
   setCreateSession: (accessToken: string, refreshToken: string) => {
     localStorage.setItem("access-token", accessToken);
     localStorage.setItem("refresh-token", refreshToken);
-    const decodedToken = jwtDecode<Account>(accessToken);
+    const decodedToken = jwtDecode<PartialAccountPopulatedInt>(accessToken);
     set((state) => ({
       ...state,
       account: decodedToken,
