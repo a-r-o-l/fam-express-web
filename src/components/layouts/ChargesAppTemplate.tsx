@@ -20,7 +20,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { LogOut, PanelTopClose } from "lucide-react";
 
 function ChargesAppTemplate() {
-  const { account, setCreateSession, accessToken, refreshToken, setCloseSession } = useAccountStore();
+  const {
+    account,
+    setCreateSession,
+    accessToken,
+    refreshToken,
+    setCloseSession,
+  } = useAccountStore();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -45,15 +51,20 @@ function ChargesAppTemplate() {
         navigate("/login");
       }
     } else {
-        if(account?.session?.opening){
-          setOpenDialog(false);
-        }else{
-          setOpenDialog(true);
-        }
-      
+      if (account?.session) {
+        setOpenDialog(false);
+      } else {
+        setOpenDialog(true);
+      }
     }
-  }, [account, accessToken, setCreateSession, navigate, openDialog, refreshToken]);
-
+  }, [
+    account,
+    accessToken,
+    setCreateSession,
+    navigate,
+    openDialog,
+    refreshToken,
+  ]);
 
   return (
     <div className="flex h-screen">
@@ -72,7 +83,7 @@ function ChargesAppTemplate() {
               <LoaderCircle className="mt-20 animate-spin" />
             </div>
           ) : ( */}
-            <Outlet />
+          <Outlet />
           {/* )} */}
         </main>
       </div>
@@ -92,12 +103,14 @@ function ChargesAppTemplate() {
               value={change}
               onChange={(e) => setChange(e.target.value)}
               autoComplete="off"
+              autoFocus
             />
           </div>
           <DialogFooter>
             <div className="flex flex-col justify-center gap-5 w-full mt-10">
               <Button
-              variant="destructive"
+                disabled={!change}
+                variant="destructive"
                 onClick={() => {
                   if (!account?._id) {
                     return;
@@ -106,10 +119,9 @@ function ChargesAppTemplate() {
                     {
                       id: account?._id,
                       bulk: {
-                        session: {
-                          opening: dayjs().toDate(),
-                          change: parseInt(change),
-                        },
+                        opening: dayjs().toDate(),
+                        change: parseInt(change),
+                        date: dayjs().format("YYYY-MM-DD"),
                       },
                     },
                     {
@@ -117,7 +129,9 @@ function ChargesAppTemplate() {
                         const { accessToken } = response;
                         setCreateSession(accessToken, refreshToken);
                         toast.success("Caja abierta");
-                        queryClient.invalidateQueries({queryKey:["getAccount", account?._id]});
+                        queryClient.invalidateQueries({
+                          queryKey: ["getAccount", account?._id],
+                        });
                         setOpenDialog(false);
                       },
                       onError: (error) => {
@@ -133,10 +147,11 @@ function ChargesAppTemplate() {
                 <PanelTopClose className="mr-2 h-4 w-4" />
                 Abrir caja
               </Button>
-              <Button onClick={()=> setCloseSession()}>
-              <LogOut className="mr-2 h-4 w-4" />
+              <Button onClick={() => setCloseSession()}>
+                <LogOut className="mr-2 h-4 w-4" />
                 Cerrar sesion
               </Button>
+              <Button onClick={() => console.log(account)}>test</Button>
             </div>
 
             {/* <div className="flex justify-between items-center w-ful">
@@ -170,7 +185,6 @@ function ChargesAppTemplate() {
                 setear account
               </Button>
             </div> */}
-
           </DialogFooter>
         </DialogContent>
       </Dialog>
