@@ -8,7 +8,10 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "serve -s dist"
+    "start": "serve -s dist",
+    "local": "npx dotenv-cli -e .env.local -- vite",
+    "develop": "npx dotenv-cli -e .env.develop -- vite",
+    "production": "npx dotenv-cli -e .env.production -- vite"
   },
   "dependencies": {
     "@mantine/form": "^7.12.2",
@@ -33,6 +36,7 @@
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.13",
     "dayjs-timezone-iana-plugin": "^0.1.0",
+    "dotenv": "^16.4.5",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.439.0",
     "react": "^18.3.1",

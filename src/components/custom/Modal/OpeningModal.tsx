@@ -13,7 +13,7 @@ import { useAccountStore } from "@/store/useAccountStore";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCreateClashClosingMutation } from "@/services/hooks/cashClosing/useCashClosingMutation";
-import { Printer, ScissorsIcon } from "lucide-react";
+import { CalendarIcon, Printer, ScissorsIcon } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -29,10 +29,15 @@ import CustomInput from "../Form/CustomInput";
 import "./styles.css";
 import { Input } from "@/components/ui/input";
 import { http } from "@/services/http";
-
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 
 function OpeningModal({ open, onClose, services }) {
-  const coinRef = useRef(null);
   const tenRef = useRef(null);
   const twentyRef = useRef(null);
   const fiftyRef = useRef(null);
@@ -47,6 +52,7 @@ function OpeningModal({ open, onClose, services }) {
 
   const [alertDialog, setAlertDialog] = useState(false);
   const [profit, setProfit] = useState(0);
+  const [dateInp, setDateInp] = useState<Date>();
 
   const { account, setCloseSession } = useAccountStore();
   const updateAccount = useUpdateAccountMutation();
@@ -56,7 +62,7 @@ function OpeningModal({ open, onClose, services }) {
   const date = useMemo(() => dayjs().toDate().toISOString(), []);
 
   const { data: salesAmount } = useGetSalesAmountByDayQuery({
-    date,
+    sessionId: account?.session?._id,
     account: account?._id,
   });
 
@@ -202,7 +208,7 @@ function OpeningModal({ open, onClose, services }) {
       createCashClosing.mutate(
         {
           account: account._id,
-          date: dayjs().toDate(),
+          date: dayjs(dateInp).format("YYYY-MM-DD"),
           total: Number(total.replace(/\./g, "")),
           sale_amount: Number(salesAmount?.totalAmount),
           balance: balance,
@@ -226,11 +232,7 @@ function OpeningModal({ open, onClose, services }) {
               {
                 id: account._id!,
                 bulk: {
-                  session: {
-                    opening: null,
-                    change: 0,
-                    profit: 0,
-                  },
+                  session: null,
                 },
               },
               {
@@ -280,22 +282,42 @@ function OpeningModal({ open, onClose, services }) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[650px]" ref={printRef}>
         <DialogHeader>
-          <DialogTitle>Cierre de caja</DialogTitle>
+          <div className="flex gap-20">
+            <DialogTitle>Cierre de caja</DialogTitle>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-[280px] justify-start text-left font-normal",
+                    !date && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {dateInp ? (
+                    dayjs(dateInp).format("DD/MM/YY")
+                  ) : (
+                    <span>Selecciona una fecha</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={dateInp}
+                  onSelect={(date) => {
+                    console.log(date);
+                    setDateInp(date);
+                  }}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
           <DialogDescription>Turno: {account?.name}</DialogDescription>
         </DialogHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
-          <CustomInputWithBadge
-            handleBlur={handleBlur}
-            handleFocus={handleFocus}
-            handleKeyDown={(e) => handleKeyDown(e, tenRef)}
-            labelName="M"
-            htmlFor="coin"
-            badgeContent={totalValues.coin}
-            ref={coinRef}
-            key={form.key("coin")}
-            {...form.getInputProps("coin")}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <CustomInputWithBadge
             handleBlur={handleBlur}
             handleFocus={handleFocus}
@@ -414,7 +436,7 @@ function OpeningModal({ open, onClose, services }) {
           />
         </div>
         <Separator />
-        <div className="space-y-4 pt-4 flex flex-col items-center">
+        <div className="space-y-4 flex flex-col items-center">
           <CustomInput
             labelName="Total"
             labelClassName="font-extrabold w-20"
@@ -449,29 +471,26 @@ function OpeningModal({ open, onClose, services }) {
             labelName="Ganancia"
             labelClassName="w-20"
             inputClassName="w-60"
-            value={
-              profit
-                ? profit.toLocaleString("de-DE")
-                : "0.00"
-            }
+            value={profit ? profit.toLocaleString("de-DE") : "0.00"}
             readOnly
           />
           <CustomInput
             labelName="Balance"
             labelClassName="font-bold w-20"
             inputClassName={`w-60 ${
-              balance > 0 ? "bg-green-300" : "bg-red-500 text-white"
+              balance < 0 ? "bg-red-500 text-white" : "bg-green-300"
             }`}
             value={balance ? balance : "0.00"}
             readOnly
           />
         </div>
-        <div className="only-app mt-5">
+        <div className="only-app">
           <Button
             onClick={() => {
-              handlePrint();
+              setAlertDialog(true);
             }}
             className=" w-full"
+            disabled={!dateInp || Number(total) < 1}
           >
             <Printer className="mr-2 h-4 w-4" /> Imprimir
           </Button>
@@ -523,32 +542,7 @@ function OpeningModal({ open, onClose, services }) {
                 if (!account?._id) {
                   return;
                 }
-                updateAccount.mutate(
-                  {
-                    id: account._id,
-                    bulk: {
-                      session: {
-                        opening: null,
-                        change: 0,
-                      },
-                    },
-                  },
-                  {
-                    onSuccess: () => {
-                      toast.success("Caja cerrada");
-                      setCloseSession();
-                      queryClient.invalidateQueries({
-                        queryKey: ["getAccount", account?._id],
-                      });
-                    },
-                    onError: (error) => {
-                      console.log(error);
-                      toast.error(
-                        "Error al cerrar caja, por favor intenta de nuevo"
-                      );
-                    },
-                  }
-                );
+                handlePrint();
               }}
             >
               Aceptar

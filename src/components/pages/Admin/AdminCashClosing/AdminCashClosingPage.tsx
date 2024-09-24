@@ -50,6 +50,7 @@ function AdminCashClosingPage() {
     useState<PartialCashClosingIntWithPopulate | null>(null);
   const { data: cashesClosing } = useGetCashesClosingQuery();
   const deleteCashClosing = useDeleteClashClosingMutation();
+
   return (
     <div className="container mx-auto px-6 py-8">
       <Card className="w-full max-w-7xl mx-auto">
@@ -63,11 +64,14 @@ function AdminCashClosingPage() {
               <TableHeader className="bg-black sticky top-0 z-10">
                 <TableRow>
                   <TableHead className="text-white">Id</TableHead>
+                  <TableHead className="text-white text-left">Ventas</TableHead>
+                  <TableHead className="text-white text-left">
+                    Ganancias
+                  </TableHead>
+                  <TableHead className="text-white text-left">Total</TableHead>
+                  <TableHead className="text-white text-left">Cambio</TableHead>
                   <TableHead className="text-white text-left">
                     Balance
-                  </TableHead>
-                  <TableHead className="text-white text-left">
-                    Ganancia
                   </TableHead>
                   <TableHead className="text-white text-left">Cuenta</TableHead>
                   <TableHead className="text-white text-left">Fecha</TableHead>
@@ -76,57 +80,67 @@ function AdminCashClosingPage() {
               </TableHeader>
               <TableBody>
                 {cashesClosing?.length ? (
-                  cashesClosing?.map((item:PartialCashClosingIntWithPopulate) => (
-                    <TableRow key={item._id}>
-                      <TableCell className="text-left">{item._id}</TableCell>
-                      <TableCell className="text-left">
-                        {item.balance}
-                      </TableCell>
-                      <TableCell className="text-left">
-                        {item?.Profit || "-"}
-                      </TableCell>
-                      <TableCell className="text-left">
-                        {item?.account?.name}
-                      </TableCell>
-                      <TableCell className="text-left">
-                        {dayjs(item?.date).format("DD/MM/YY - HH:mm")}
-                      </TableCell>
-
-                      <TableCell className="text-left">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <EllipsisVertical className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem
-                              onClick={() => {
-                                setSelectedCashClosing(item);
-                              }}
-                            >
-                              <ReceiptText className="mr-2 h-4 w-4" />
-                              Detalles
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Pencil className="mr-2 h-4 w-4" />
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={() => {
-                                setSelectedCashClosingToDelete(item);
-                              }}
-                            >
-                              <TrashIcon className="mr-2 h-4 w-4" />
-                              Eliminar
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                  cashesClosing?.map(
+                    (item: PartialCashClosingIntWithPopulate) => (
+                      <TableRow key={item._id}>
+                        <TableCell className="text-left">{item._id}</TableCell>
+                        <TableCell className="text-left">
+                          {item.sale_amount}
+                        </TableCell>
+                        <TableCell className="text-left">
+                          {item?.Profit || "-"}
+                        </TableCell>
+                        <TableCell className="text-left">
+                          {item.total}
+                        </TableCell>
+                        <TableCell className="text-left">
+                          {item.change}
+                        </TableCell>
+                        <TableCell className="text-left">
+                          {item.balance}
+                        </TableCell>
+                        <TableCell className="text-left">
+                          {item?.account?.name}
+                        </TableCell>
+                        <TableCell className="text-left">
+                          {dayjs(item?.date).format("DD/MM/YY")}
+                        </TableCell>
+                        <TableCell className="text-left">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-8 w-8 p-0">
+                                <EllipsisVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  setSelectedCashClosing(item);
+                                }}
+                              >
+                                <ReceiptText className="mr-2 h-4 w-4" />
+                                Detalles
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Pencil className="mr-2 h-4 w-4" />
+                                Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  setSelectedCashClosingToDelete(item);
+                                }}
+                              >
+                                <TrashIcon className="mr-2 h-4 w-4" />
+                                Eliminar
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  )
                 ) : (
                   <TableRow>
                     <TableCell className="text-center h-20" colSpan={5}>
