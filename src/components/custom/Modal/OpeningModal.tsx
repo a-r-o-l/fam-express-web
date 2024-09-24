@@ -62,7 +62,7 @@ function OpeningModal({ open, onClose, services }) {
   const date = useMemo(() => dayjs().toDate().toISOString(), []);
 
   const { data: salesAmount } = useGetSalesAmountByDayQuery({
-    date,
+    sessionId: account?.session?._id,
     account: account?._id,
   });
 
@@ -208,7 +208,7 @@ function OpeningModal({ open, onClose, services }) {
       createCashClosing.mutate(
         {
           account: account._id,
-          date: account.session?.date,
+          date: dayjs(dateInp).format("YYYY-MM-DD"),
           total: Number(total.replace(/\./g, "")),
           sale_amount: Number(salesAmount?.totalAmount),
           balance: balance,
@@ -232,7 +232,7 @@ function OpeningModal({ open, onClose, services }) {
               {
                 id: account._id!,
                 bulk: {
-                  session: undefined,
+                  session: null,
                 },
               },
               {

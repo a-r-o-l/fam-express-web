@@ -4,19 +4,18 @@ import { SaleIntPopulated } from "@/types/SaleTypes";
 
 type useGetSalesByDayQueryParams = {
   date?: string;
-}
+};
 
 type useGetSalesAmountByDayQueryParams = {
-  date?: string;
+  sessionId?: string;
   account?: string;
-}
+};
 
 type useGetSalesWithPaginationQueryParams = {
   currentPage: number;
   totalPages: number;
   sales: Partial<SaleIntPopulated>[];
-}
-
+};
 
 export const useGetSalesQuery = (
   params?: null,
@@ -39,14 +38,20 @@ export const useGetSalesWithPaginationQuery = (
   options?: UseQueryOptions<useGetSalesWithPaginationQueryParams, Error>
 ) => {
   return useQuery({
-    queryKey: ["getSalesWithPag", params ? params.page : 1, params ? params.limit : 10],
+    queryKey: [
+      "getSalesWithPag",
+      params ? params.page : 1,
+      params ? params.limit : 10,
+    ],
     queryFn: () => {
-      return salesApiService.getSalesWithPagination(params?.limit, params?.page);
+      return salesApiService.getSalesWithPagination(
+        params?.limit,
+        params?.page
+      );
     },
     ...options,
   });
 };
-
 
 export const useGetSalesByDayQuery = (
   params?: useGetSalesByDayQueryParams,
@@ -63,12 +68,19 @@ export const useGetSalesByDayQuery = (
 
 export const useGetSalesAmountByDayQuery = (
   params?: useGetSalesAmountByDayQueryParams,
-  options?: UseQueryOptions<{totalAmount:number}, Error>
+  options?: UseQueryOptions<{ totalAmount: number }, Error>
 ) => {
   return useQuery({
-    queryKey: ["getSales", params ? params.date : null, params ? params.account : null],
+    queryKey: [
+      "getSales",
+      params ? params.sessionId : null,
+      params ? params.account : null,
+    ],
     queryFn: () => {
-      return salesApiService.getSaleAmountByDay(params?.date, params?.account);
+      return salesApiService.getSaleAmountByDay(
+        params?.sessionId,
+        params?.account
+      );
     },
     ...options,
   });
