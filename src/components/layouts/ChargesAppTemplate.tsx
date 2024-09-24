@@ -78,13 +78,7 @@ function ChargesAppTemplate() {
           setIsSidebarOpen={setIsSidebarOpen}
         />
         <main className="flex-1 overflow-x-hidden overflow-y-auto">
-          {/* {isLoading ? (
-            <div className="flex flex-1 justify-center items-center">
-              <LoaderCircle className="mt-20 animate-spin" />
-            </div>
-          ) : ( */}
           <Outlet />
-          {/* )} */}
         </main>
       </div>
       <Dialog open={openDialog}>
@@ -151,40 +145,7 @@ function ChargesAppTemplate() {
                 <LogOut className="mr-2 h-4 w-4" />
                 Cerrar sesion
               </Button>
-              <Button onClick={() => console.log(account)}>test</Button>
             </div>
-
-            {/* <div className="flex justify-between items-center w-ful">
-              <Button onClick={() => console.log(account)}>account</Button>
-              <Button onClick={() => console.log(accountFromBd)}>
-                accountBD
-              </Button>
-               <Button
-                onClick={() => {
-                  if (!account?._id) {
-                    return;
-                  }
-                  updateAccount.mutate(
-                    {
-                      id: account?._id,
-                      bulk: {
-                        session: {
-                          opening: null,
-                          change: 0,
-                        },
-                      },
-                    },
-                    {
-                      onSuccess: () => {
-                        console.log("lesto");
-                      },
-                    }
-                  );
-                }}
-              >
-                setear account
-              </Button>
-            </div> */}
           </DialogFooter>
         </DialogContent>
       </Dialog>

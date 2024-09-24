@@ -218,10 +218,10 @@ function SaleScreen() {
                                 }
                               }}
                             />
-                            <div className="flex flex-wrap w-full justify-end gap-4 my-5">
-                              <Button variant="outline">Limpiar</Button>
+                            <div className="flex w-full my-5">
                               <Button
                                 variant="default"
+                                className="w-full"
                                 onClick={() => handleSubmit(service)}
                               >
                                 Enviar
