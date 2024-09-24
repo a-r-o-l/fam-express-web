@@ -23,7 +23,10 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useAccountStore } from "@/store/useAccountStore";
 import MenuButton from "../custom/Button/MenuButton";
-
+import { AxiosError } from "axios";
+interface ErrorResponse {
+  message: string;
+}
 function LoginScreen() {
   const navigate = useNavigate();
   const createSession = useCreateSessionMutation();
@@ -31,76 +34,86 @@ function LoginScreen() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { setCreateSession } = useAccountStore();
-  const [menu, setMenu] = useState(true)
-  const [app, setApp] = useState("")
+  const [menu, setMenu] = useState(true);
+  const [app, setApp] = useState("");
 
-
-
-  if(menu){
+  if (menu) {
     return (
       <main className="flex flex-1 items-center justify-center">
-      <Card className="w-full max-w-md mt-60">
-        <CardHeader className="space-y-5 items-center">
-          <img src="/logoFam.png" alt="Complex Logo" className="object-cover h-20" />
-          <CardTitle className="text-2xl font-semibold text-center">
-            Elige una aplicacion
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-10 mt-10">
-        <div className="space-y-2 w-full">
-          <MenuButton
-          label="Admin"
-          onClick={()=> {
-            setApp("admin")
-            setMenu(false)
-            }}
-          />
-        </div>
-        <div className="space-y-2 w-full">
-        <MenuButton
-          label="Cargas Virtuales"
-          onClick={()=> {
-            setApp("cargas virtuales")
-            setMenu(false)
-            }}
-          />
-        </div>
-        <div className="space-y-2 w-full">
-        <MenuButton
-          label="Pedidos"
-          onClick={()=> {
-            setApp("pedidos")
-            setMenu(false)
-            }}
-          />
-        </div>
-        <div className="space-y-2 w-full">
-        <MenuButton
-          label="Pagos"
-          onClick={()=> {
-            setApp("pagos")
-            setMenu(false)
-            }}
-          />
-        </div>
-        </CardContent>
-        <CardFooter>
-        </CardFooter>
-      </Card>
-    </main>
-    )
+        <Card className="w-full max-w-md mt-60">
+          <CardHeader className="space-y-5 items-center">
+            <img
+              src="/logoFam.png"
+              alt="Complex Logo"
+              className="object-cover h-20"
+            />
+            <CardTitle className="text-2xl font-semibold text-center">
+              Elige una aplicacion
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-10 mt-10">
+            <div className="space-y-2 w-full">
+              <MenuButton
+                label="Admin"
+                onClick={() => {
+                  setApp("admin");
+                  setMenu(false);
+                }}
+              />
+            </div>
+            <div className="space-y-2 w-full">
+              <MenuButton
+                label="Cargas Virtuales"
+                onClick={() => {
+                  setApp("cargas virtuales");
+                  setMenu(false);
+                }}
+              />
+            </div>
+            <div className="space-y-2 w-full">
+              <MenuButton
+                label="Pedidos"
+                onClick={() => {
+                  setApp("pedidos");
+                  setMenu(false);
+                }}
+              />
+            </div>
+            <div className="space-y-2 w-full">
+              <MenuButton
+                label="Pagos"
+                onClick={() => {
+                  setApp("pagos");
+                  setMenu(false);
+                }}
+              />
+            </div>
+          </CardContent>
+          <CardFooter></CardFooter>
+        </Card>
+      </main>
+    );
   }
 
   return (
     <main className="flex flex-1 items-center justify-center">
       <Card className="w-full max-w-md mt-60">
         <div className="w-full px-2 py-2">
-      <Button size="icon" variant="outline" onClick={()=> setMenu(true)} className="rounded-full">
-        <ArrowLeft/>
-      </Button>
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={() => setMenu(true)}
+            className="rounded-full"
+          >
+            <ArrowLeft />
+          </Button>
         </div>
         <CardHeader className="space-y-5 items-center">
-          <img src="/logoFam.png" alt="Complex Logo" className="object-cover h-20" />
+          <img
+            src="/logoFam.png"
+            alt="Complex Logo"
+            className="object-cover h-20"
+          />
           <CardTitle className="text-2xl font-semibold text-center">
             Iniciar sesión
           </CardTitle>
@@ -162,16 +175,24 @@ function LoginScreen() {
                         setCreateSession(accessToken, refreshToken);
                         toast.success("Sesion iniciada");
                         setIsLoading(false);
-                        if(app === "admin"){
-                          navigate("/admin")
-                        } else{
-                          navigate("/")
+                        if (app === "admin") {
+                          navigate("/admin");
+                        } else {
+                          navigate("/");
                         }
                       }
                     },
-                    onError: (error) => {
+                    onError: (error: AxiosError<unknown>) => {
                       setIsLoading(false);
-                      console.log(error);
+                      if (error.response?.status === 401) {
+                        const errorMessage = (
+                          error.response.data as ErrorResponse
+                        ).message;
+                        return toast.error(errorMessage);
+                      }
+                      toast.error(
+                        "Error al iniciar sesión, por favor intenta de nuevo"
+                      );
                     },
                   }
                 );

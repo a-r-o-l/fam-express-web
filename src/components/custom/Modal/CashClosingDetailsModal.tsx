@@ -22,7 +22,6 @@ function CashClosingDetailsModal({
   onClose,
   cashClosing,
 }: CashClosingDetailsModalProps) {
-
   const parseValue = (value: number, amount: number) => {
     const result = value * amount;
     return result.toLocaleString("de-DE");
@@ -33,19 +32,28 @@ function CashClosingDetailsModal({
       <DialogContent className="sm:max-w-[650px]">
         <DialogHeader>
           <DialogTitle>Cierre de caja</DialogTitle>
-          <DialogDescription>{(cashClosing?.account?.name ?? "").toUpperCase()} - {dayjs(cashClosing?.date).format("DD/MM/YY HH:mm")}</DialogDescription>
+          <DialogDescription>
+            {(cashClosing?.account?.name ?? "").toUpperCase()} -{" "}
+            {dayjs(cashClosing?.date).format("DD/MM/YY")}
+          </DialogDescription>
         </DialogHeader>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
           <div className="flex items-center gap-5">
             <Label className="w-28">M</Label>
             <Badge className="w-36">{cashClosing?.coin}</Badge>
-            <Input value={parseValue(1, Number(cashClosing?.coin)) || "0"} readOnly autoFocus={false}/>
-
+            <Input
+              value={parseValue(1, Number(cashClosing?.coin)) || "0"}
+              readOnly
+              autoFocus={false}
+            />
           </div>
           <div className="flex items-center gap-5">
             <Label className="w-28">10</Label>
-          <Badge className="w-36">{cashClosing?.ten}</Badge>
-            <Input value={parseValue(10, Number(cashClosing?.ten)) || "0"} readOnly />
+            <Badge className="w-36">{cashClosing?.ten}</Badge>
+            <Input
+              value={parseValue(10, Number(cashClosing?.ten)) || "0"}
+              readOnly
+            />
           </div>
 
           <div className="flex items-center gap-5">
@@ -55,13 +63,14 @@ function CashClosingDetailsModal({
               value={parseValue(20, Number(cashClosing?.twenty)) || "0"}
               readOnly
             />
-
           </div>
           <div className="flex items-center gap-5">
             <Label className="w-28">50</Label>
             <Badge className="w-36">{cashClosing?.fifty}</Badge>
-            <Input value={parseValue(50, Number(cashClosing?.fifty)) || "0"} readOnly />
-
+            <Input
+              value={parseValue(50, Number(cashClosing?.fifty)) || "0"}
+              readOnly
+            />
           </div>
           <div className="flex items-center gap-5">
             <Label className="w-28">100</Label>
@@ -70,7 +79,6 @@ function CashClosingDetailsModal({
               value={parseValue(100, Number(cashClosing?.houndred)) || "0"}
               readOnly
             />
-
           </div>
           <div className="flex items-center gap-5">
             <Label className="w-28">200</Label>
@@ -79,7 +87,6 @@ function CashClosingDetailsModal({
               value={parseValue(200, Number(cashClosing?.twoHoundred)) || "0"}
               readOnly
             />
-
           </div>
           <div className="flex items-center gap-5">
             <Label className="w-28">500</Label>
@@ -88,7 +95,6 @@ function CashClosingDetailsModal({
               value={parseValue(500, Number(cashClosing?.fiveHoundred)) || "0"}
               readOnly
             />
-
           </div>
           <div className="flex items-center gap-5">
             <Label className="w-28">1000</Label>
@@ -97,7 +103,6 @@ function CashClosingDetailsModal({
               value={parseValue(1000, Number(cashClosing?.thousand)) || "0"}
               readOnly
             />
-
           </div>
           <div className="flex items-center gap-5">
             <Label className="w-28">2000</Label>
@@ -106,7 +111,6 @@ function CashClosingDetailsModal({
               value={parseValue(2000, Number(cashClosing?.twoThousand)) || "0"}
               readOnly
             />
-            
           </div>
           <div className="flex items-center gap-5">
             <Label className="w-28">10000</Label>
@@ -128,7 +132,10 @@ function CashClosingDetailsModal({
         <div className="flex flex-col gap-4 items-center">
           <div className="flex items-center gap-5">
             <Label className="w-28">Total</Label>
-            <Input value={parseValue(1, Number(cashClosing?.total)) || "0"} readOnly />
+            <Input
+              value={parseValue(1, Number(cashClosing?.total)) || "0"}
+              readOnly
+            />
           </div>
           <div className="flex items-center gap-5">
             <Label className="w-28">Cambio</Label>
@@ -147,7 +154,10 @@ function CashClosingDetailsModal({
           </div>
           <div className="flex items-center gap-5">
             <Label className="w-28">Ganancias</Label>
-            <Input value={parseValue(1, Number(cashClosing?.Profit)) || "0"} readOnly />
+            <Input
+              value={parseValue(1, Number(cashClosing?.Profit)) || "0"}
+              readOnly
+            />
           </div>
         </div>
       </DialogContent>
