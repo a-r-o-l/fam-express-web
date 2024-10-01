@@ -136,6 +136,7 @@ function LoginScreen() {
                     <SelectItem value="tarde">Tarde</SelectItem>
                     <SelectItem value="noche">Noche</SelectItem>
                     <SelectItem value="fernando">Admin</SelectItem>
+                    <SelectItem value="noelia">Noelia</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -177,8 +178,10 @@ function LoginScreen() {
                         setIsLoading(false);
                         if (app === "admin") {
                           navigate("/admin");
-                        } else {
+                        } else if (app === "cargas virtuales") {
                           navigate("/");
+                        } else if (app === "pagos") {
+                          navigate("/payments");
                         }
                       }
                     },

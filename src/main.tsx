@@ -14,9 +14,12 @@ import AdminAccountsPage from "./components/pages/Admin/AdminAccounts/AdminAccou
 import AdminSalesPage from "./components/pages/Admin/AdminSales/AdminSalesPage";
 import AdminServicesPage from "./components/pages/Admin/AdminService/AdminServicesPage";
 import AdminCashClosingPage from "./components/pages/Admin/AdminCashClosing/AdminCashClosingPage";
+import AdminPaymentsPage from "./components/pages/Admin/AdminPayments/AdminPaymentsPage";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/es";
+import PaymentsScreen from "./components/pages/Payments/PaymentsScreen";
+import PaymentsAppTemplate from "./components/layouts/PaymentsAppTemplate";
 
 dayjs.extend(relativeTime);
 dayjs.locale("es");
@@ -61,6 +64,20 @@ const router = createBrowserRouter([
       {
         path: "/admin/closes",
         element: <AdminCashClosingPage />,
+      },
+      {
+        path: "/admin/payments",
+        element: <AdminPaymentsPage />,
+      },
+    ],
+  },
+  {
+    path: "/payments",
+    element: <PaymentsAppTemplate />,
+    children: [
+      {
+        index: true,
+        element: <PaymentsScreen />,
       },
     ],
   },

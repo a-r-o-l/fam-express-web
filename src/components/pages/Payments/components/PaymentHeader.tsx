@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button } from "../ui/button";
+import React, { useMemo, useState } from "react";
+import { Button } from "../../../ui/button";
 import { ChevronDown, Layers, LogOut, PanelBottomClose } from "lucide-react";
 import {
   DropdownMenu,
@@ -8,8 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-// import ThemeButton from "../custom/Button/ThemeButton";
+} from "../../../ui/dropdown-menu";
 import { useAccountStore } from "@/store/useAccountStore";
 import {
   AlertDialog,
@@ -20,15 +19,23 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "../ui/alert-dialog";
-import OpeningModal from "../custom/Modal/OpeningModal";
+} from "../../../ui/alert-dialog";
+import OpeningModal from "../../../custom/Modal/OpeningModal";
 import { useGetServicesQuery } from "@/services/hooks/services/useServicesQuery";
+import { useUpdatePaymentSessionMutation } from "@/services/hooks/paymentSession/usePaymentSessionMutation";
+import { usePaymentSessionStore } from "@/store/usePaymentSessionStore";
+import { useGetPaymentsQuery } from "@/services/hooks/payment/usePaymentsQuery";
+import { paymentsApiService } from "@/services/paymentsApiService";
+import ClosePaymentSessionModal from "./ClosePaymentSessionModal";
 
-function Header({ isSidebarOpen, setIsSidebarOpen }) {
+function PaymentHeader({ isSidebarOpen, setIsSidebarOpen }) {
   const { account, setCloseSession } = useAccountStore();
+  const { paymentsession, setPaymentSession } = usePaymentSessionStore();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const updatePaymentSession = useUpdatePaymentSessionMutation();
   const { data: services } = useGetServicesQuery();
+
   return (
     <header className="bg-white shadow-sm z-10">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -70,10 +77,9 @@ function Header({ isSidebarOpen, setIsSidebarOpen }) {
           </DropdownMenu>
         </div>
       </div>
-      <OpeningModal
+      <ClosePaymentSessionModal
         open={openModal}
         onClose={() => setOpenModal(false)}
-        services={services}
       />
       <AlertDialog open={openAlert} onOpenChange={() => setOpenAlert(false)}>
         <AlertDialogContent>
@@ -85,7 +91,18 @@ function Header({ isSidebarOpen, setIsSidebarOpen }) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => setCloseSession()}>
+            <AlertDialogAction
+              onClick={async () => {
+                const payments = await paymentsApiService.getPayments(
+                  paymentsession?._id || ""
+                );
+                console.log("payments => ", payments);
+                // updatePaymentSession.mutate({
+                //   id: paymentsession?._id || "",
+                //   bulk: { status: "closed" },
+                // });
+              }}
+            >
               Aceptar
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -95,4 +112,4 @@ function Header({ isSidebarOpen, setIsSidebarOpen }) {
   );
 }
 
-export default Header;
+export default PaymentHeader;

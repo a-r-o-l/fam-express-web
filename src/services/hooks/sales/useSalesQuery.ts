@@ -34,6 +34,8 @@ export const useGetSalesWithPaginationQuery = (
   params?: {
     limit: number;
     page: number;
+    account?: string;
+    service?: string;
   },
   options?: UseQueryOptions<useGetSalesWithPaginationQueryParams, Error>
 ) => {
@@ -41,12 +43,16 @@ export const useGetSalesWithPaginationQuery = (
     queryKey: [
       "getSalesWithPag",
       params ? params.page : 1,
-      params ? params.limit : 10,
+      params ? params.limit : 100,
+      params ? params.account : "",
+      params ? params.service : "",
     ],
     queryFn: () => {
       return salesApiService.getSalesWithPagination(
         params?.limit,
-        params?.page
+        params?.page,
+        params?.account,
+        params?.service
       );
     },
     ...options,
