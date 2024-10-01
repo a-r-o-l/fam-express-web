@@ -69,7 +69,7 @@ function AdminSalesPage() {
   });
 
   const { data: services } = useGetServicesQuery();
-  const { data: accounts } = useGetAccountsQuery({ role: "user" });
+  const { data: accounts } = useGetAccountsQuery({ role: "cargas virtuales" });
   const [totalPages, setTotalPages] = useState(sales?.totalPages || 1);
 
   const handlePageChange = useCallback(
