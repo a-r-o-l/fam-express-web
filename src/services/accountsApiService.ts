@@ -2,8 +2,8 @@ import { AccountInt } from "@/types/AccountTypes";
 import { http } from "./http";
 
 export const accountsApiService = {
-  async getAccounts() {
-    const response = await http.get("/accounts");
+  async getAccounts(role?: string) {
+    const response = await http.get(`/accounts?role=${role ? role : "all"}`);
     return response.data;
   },
   async getAccount(id: string) {

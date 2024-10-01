@@ -7,13 +7,13 @@ type GetAccountQueryParams = {
 };
 
 export const useGetAccountsQuery = (
-  params?: null,
+  params?: { role?: string },
   options?: UseQueryOptions<Partial<AccountInt>, Error, Partial<AccountInt>[]>
 ) => {
   return useQuery({
-    queryKey: ["getAccounts"],
+    queryKey: ["getAccounts", params?.role ? params.role : ""],
     queryFn: () => {
-      return accountsApiService.getAccounts();
+      return accountsApiService.getAccounts(params?.role);
     },
     ...options,
   });

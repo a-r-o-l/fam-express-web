@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Aside from "./Aside";
 import Header from "./Header";
@@ -31,13 +31,6 @@ function ChargesAppTemplate() {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const openBox = useOpenBoxMutation();
-  // const updateAccount = useUpdateAccountMutation();
-  // const { data: accountFromBd, isLoading } = useGetAccountQuery(
-  //   { id: account?._id },
-  //   {
-  //     queryKey: ["getAccount", account?._id ? account._id : ""],
-  //   }
-  // );
   const [change, setChange] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
 

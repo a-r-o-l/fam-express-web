@@ -7,9 +7,16 @@ export const salesApiService = {
     return response.data;
   },
 
-  async getSalesWithPagination(limit?: number, page?: number) {
+  async getSalesWithPagination(
+    limit?: number,
+    page?: number,
+    account?: string,
+    service?: string
+  ) {
     const response = await http.get(
-      `/sales/pagination?page=${page || 1}&limit=${limit || 10}`
+      `/sales/pagination?page=${page || 1}&limit=${limit || 100}&account=${
+        account || "all"
+      }&service=${service || "all"}`
     );
     return response.data;
   },
