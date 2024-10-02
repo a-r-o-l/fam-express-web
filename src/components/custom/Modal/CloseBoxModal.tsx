@@ -21,7 +21,6 @@ import {
   AlertDialogFooter,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useGetSalesAmountByDayQuery } from "@/services/hooks/sales/useSalesQuery";
 import dayjs from "dayjs";
 import CustomInputWithBadge from "../Form/CustomInputWithBadge";
 import { Separator } from "@/components/ui/separator";
@@ -36,8 +35,9 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
+import { salesApiService } from "@/services/salesApiService";
 
-function OpeningModal({ open, onClose, services }) {
+function CloseBoxModal({ open, onClose, services }) {
   const tenRef = useRef(null);
   const twentyRef = useRef(null);
   const fiftyRef = useRef(null);
@@ -52,6 +52,7 @@ function OpeningModal({ open, onClose, services }) {
 
   const [alertDialog, setAlertDialog] = useState(false);
   const [profit, setProfit] = useState(0);
+  const [totalSalesAmount, setTotalSalesAmount] = useState(0);
   const [dateInp, setDateInp] = useState<Date>();
 
   const { account, setCloseSession } = useAccountStore();
@@ -60,11 +61,6 @@ function OpeningModal({ open, onClose, services }) {
   const queryClient = useQueryClient();
 
   const date = useMemo(() => dayjs().toDate().toISOString(), []);
-
-  const { data: salesAmount } = useGetSalesAmountByDayQuery({
-    sessionId: account?.session?._id,
-    account: account?._id,
-  });
 
   const form = useForm({
     mode: "controlled",
@@ -157,13 +153,13 @@ function OpeningModal({ open, onClose, services }) {
   }, [totalValues]);
 
   const balance = useMemo(() => {
-    const totalAmount = salesAmount?.totalAmount || 0;
+    const totalAmount = totalSalesAmount || 0;
     const totalCash = Number(total.replace(/\./g, ""));
     const change = account?.session?.change || 0;
     const totalProfit = profit || 0;
     const result = totalCash - totalAmount - change - totalProfit;
     return result || 0;
-  }, [total, account?.session?.change, salesAmount, profit]);
+  }, [total, account?.session?.change, totalSalesAmount, profit]);
 
   const handlePrint = () => {
     const printContent = printRef.current;
@@ -210,7 +206,7 @@ function OpeningModal({ open, onClose, services }) {
           account: account._id,
           date: dayjs(dateInp).format("YYYY-MM-DD"),
           total: Number(total.replace(/\./g, "")),
-          sale_amount: Number(salesAmount?.totalAmount),
+          sale_amount: Number(totalSalesAmount),
           balance: balance,
           coin: Number(form.getValues().coin),
           ten: Number(form.getValues().ten),
@@ -274,9 +270,17 @@ function OpeningModal({ open, onClose, services }) {
         const data = response.data;
         setProfit(data?.session?.profit || 0);
       };
+      const getSalesAmount = async () => {
+        const res = await salesApiService.getSaleAmountByDay(
+          account?.session?._id,
+          account?._id
+        );
+        setTotalSalesAmount(res.totalAmount);
+      };
       getAccount();
+      getSalesAmount();
     }
-  }, [open, account?._id]);
+  }, [open, account]);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -306,7 +310,6 @@ function OpeningModal({ open, onClose, services }) {
                   mode="single"
                   selected={dateInp}
                   onSelect={(date) => {
-                    console.log(date);
                     setDateInp(date);
                   }}
                   initialFocus
@@ -316,7 +319,6 @@ function OpeningModal({ open, onClose, services }) {
           </div>
           <DialogDescription>Turno: {account?.name}</DialogDescription>
         </DialogHeader>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <CustomInputWithBadge
             handleBlur={handleBlur}
@@ -460,8 +462,8 @@ function OpeningModal({ open, onClose, services }) {
             labelClassName="w-20"
             inputClassName="w-60"
             value={
-              salesAmount?.totalAmount
-                ? salesAmount.totalAmount.toLocaleString("de-DE")
+              totalSalesAmount
+                ? totalSalesAmount.toLocaleString("de-DE")
                 : "0.00"
             }
             readOnly
@@ -554,4 +556,4 @@ function OpeningModal({ open, onClose, services }) {
   );
 }
 
-export default OpeningModal;
+export default CloseBoxModal;

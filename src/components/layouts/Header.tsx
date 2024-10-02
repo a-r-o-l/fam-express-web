@@ -21,7 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../ui/alert-dialog";
-import OpeningModal from "../custom/Modal/OpeningModal";
+import CloseBoxModal from "../custom/Modal/CloseBoxModal";
 import { useGetServicesQuery } from "@/services/hooks/services/useServicesQuery";
 
 function Header({ isSidebarOpen, setIsSidebarOpen }) {
@@ -70,7 +70,7 @@ function Header({ isSidebarOpen, setIsSidebarOpen }) {
           </DropdownMenu>
         </div>
       </div>
-      <OpeningModal
+      <CloseBoxModal
         open={openModal}
         onClose={() => setOpenModal(false)}
         services={services}

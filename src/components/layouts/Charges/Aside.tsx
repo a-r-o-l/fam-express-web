@@ -1,6 +1,6 @@
-import { Button } from "../ui/button";
-import { Banknote } from "lucide-react";
-import {} from "../ui/dropdown-menu";
+import { Button } from "../../ui/button";
+import { LayoutDashboard } from "lucide-react";
+import {} from "../../ui/dropdown-menu";
 import { NavLink } from "react-router-dom";
 import {
   Sheet,
@@ -8,7 +8,7 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "../ui/sheet";
+} from "../../ui/sheet";
 
 function Aside({ isSidebarOpen, setIsSidebarOpen }) {
   return (
@@ -24,7 +24,7 @@ function Aside({ isSidebarOpen, setIsSidebarOpen }) {
       </div>
       <nav className="space-y-5 py-5">
         <NavLink
-          to="/payments"
+          to="/"
           className={({ isActive }) =>
             isActive ? "underline underline-offset-8 text-cx-2" : ""
           }
@@ -34,8 +34,8 @@ function Aside({ isSidebarOpen, setIsSidebarOpen }) {
               variant={isActive ? "default" : "ghost"}
               className="w-full justify-start"
             >
-              <Banknote className="mr-2 h-4 w-4" />
-              Pagos
+              <LayoutDashboard className="mr-2 h-4 w-4" />
+              Ventas
             </Button>
           )}
         </NavLink>
@@ -62,7 +62,7 @@ function Aside({ isSidebarOpen, setIsSidebarOpen }) {
           <div className="grid gap-4 py-4">
             <nav className="space-y-5 py-5">
               <NavLink
-                to="/payments"
+                to="/"
                 className={({ isActive }) =>
                   isActive ? "underline underline-offset-8 text-cx-2" : ""
                 }
@@ -72,8 +72,8 @@ function Aside({ isSidebarOpen, setIsSidebarOpen }) {
                     variant={isActive ? "default" : "ghost"}
                     className="w-full justify-start"
                   >
-                    <Banknote className="mr-2 h-4 w-4" />
-                    Pagos
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    Ventas
                   </Button>
                 )}
               </NavLink>

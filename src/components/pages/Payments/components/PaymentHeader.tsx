@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useState } from "react";
 import { Button } from "../../../ui/button";
 import { ChevronDown, Layers, LogOut, PanelBottomClose } from "lucide-react";
 import {
@@ -20,21 +20,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../../../ui/alert-dialog";
-import OpeningModal from "../../../custom/Modal/OpeningModal";
-import { useGetServicesQuery } from "@/services/hooks/services/useServicesQuery";
-import { useUpdatePaymentSessionMutation } from "@/services/hooks/paymentSession/usePaymentSessionMutation";
-import { usePaymentSessionStore } from "@/store/usePaymentSessionStore";
-import { useGetPaymentsQuery } from "@/services/hooks/payment/usePaymentsQuery";
-import { paymentsApiService } from "@/services/paymentsApiService";
 import ClosePaymentSessionModal from "./ClosePaymentSessionModal";
 
 function PaymentHeader({ isSidebarOpen, setIsSidebarOpen }) {
   const { account, setCloseSession } = useAccountStore();
-  const { paymentsession, setPaymentSession } = usePaymentSessionStore();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const updatePaymentSession = useUpdatePaymentSessionMutation();
-  const { data: services } = useGetServicesQuery();
 
   return (
     <header className="bg-white shadow-sm z-10">
@@ -93,14 +84,7 @@ function PaymentHeader({ isSidebarOpen, setIsSidebarOpen }) {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={async () => {
-                const payments = await paymentsApiService.getPayments(
-                  paymentsession?._id || ""
-                );
-                console.log("payments => ", payments);
-                // updatePaymentSession.mutate({
-                //   id: paymentsession?._id || "",
-                //   bulk: { status: "closed" },
-                // });
+                setCloseSession();
               }}
             >
               Aceptar
