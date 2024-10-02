@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import Header from "./Header";
+import Header from "../Header";
 import { useAccountStore } from "@/store/useAccountStore";
 import AdminAside from "./AdminAside";
 

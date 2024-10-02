@@ -1,4 +1,4 @@
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   Banknote,
   Cuboid,
@@ -8,7 +8,7 @@ import {
   PlugZap,
   Users,
 } from "lucide-react";
-import {} from "../ui/dropdown-menu";
+import {} from "../../ui/dropdown-menu";
 import { NavLink } from "react-router-dom";
 import {
   Sheet,
@@ -16,7 +16,7 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "../ui/sheet";
+} from "../../ui/sheet";
 
 function AdminAside({ isSidebarOpen, setIsSidebarOpen }) {
   return (

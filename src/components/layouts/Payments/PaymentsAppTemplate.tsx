@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import PaymentsAside from "./PaymentsAside";
-import Header from "./Header";
 import { useAccountStore } from "@/store/useAccountStore";
 import { usePaymentSessionStore } from "@/store/usePaymentSessionStore";
 import { useQueryClient } from "@tanstack/react-query";
@@ -13,15 +12,15 @@ import {
   DialogDescription,
   DialogFooter,
   DialogTitle,
-} from "../ui/dialog";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+} from "../../ui/dialog";
+import { Label } from "../../ui/label";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
 import dayjs from "dayjs";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { PartialPaymentSessionInt } from "@/types/PaymentSessionTypes";
-import PaymentHeader from "../pages/Payments/components/PaymentHeader";
+import PaymentHeader from "../../pages/Payments/components/PaymentHeader";
 
 function PaymentsAppTemplate() {
   const { paymentsession, setPaymentSession } = usePaymentSessionStore();

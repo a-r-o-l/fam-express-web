@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Aside from "./Aside";
-import Header from "./Header";
+import Header from "../Header";
 import { useAccountStore } from "@/store/useAccountStore";
 import {
   Dialog,
@@ -9,10 +9,10 @@ import {
   DialogDescription,
   DialogFooter,
   DialogTitle,
-} from "../ui/dialog";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+} from "../../ui/dialog";
+import { Label } from "../../ui/label";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
 import dayjs from "dayjs";
 import { toast } from "sonner";
 import { useOpenBoxMutation } from "@/services/hooks/auth/useAuthMutation";
